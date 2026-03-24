@@ -1,0 +1,15 @@
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\bin\Debug\net8.0\EquipmentRental.exe
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\bin\Debug\net8.0\EquipmentRental.deps.json
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\bin\Debug\net8.0\EquipmentRental.runtimeconfig.json
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\bin\Debug\net8.0\EquipmentRental.dll
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\bin\Debug\net8.0\EquipmentRental.pdb
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\obj\Debug\net8.0\EquipmentRental.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\obj\Debug\net8.0\EquipmentRental.AssemblyInfoInputs.cache
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\obj\Debug\net8.0\EquipmentRental.AssemblyInfo.cs
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\obj\Debug\net8.0\EquipmentRental.csproj.CoreCompileInputs.cache
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\obj\Debug\net8.0\EquipmentRental.sourcelink.json
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\obj\Debug\net8.0\EquipmentRental.dll
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\obj\Debug\net8.0\refint\EquipmentRental.dll
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\obj\Debug\net8.0\EquipmentRental.pdb
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\obj\Debug\net8.0\EquipmentRental.genruntimeconfig.cache
+C:\Users\spide\OneDrive\Pulpit\APBD\APBD2\EquipmentRental\obj\Debug\net8.0\ref\EquipmentRental.dll
