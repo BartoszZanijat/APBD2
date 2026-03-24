@@ -19,6 +19,7 @@ class Program
             Console.WriteLine("3. List all equipment");
             Console.WriteLine("4. List available equipment");
             Console.WriteLine("5. Rent equipment");
+            Console.WriteLine("6. Return equipment");
             Console.WriteLine("0. Exit");
             Console.Write("Choose option: ");
 
@@ -39,6 +40,9 @@ class Program
                     break;
                 case "5":
                     RentEquipment();
+                    break;
+                case "6":
+                    ReturnEquipment();
                     break;
                 case "0":
                     return;
@@ -225,6 +229,36 @@ class Program
             Console.WriteLine("Rental successful.");
         else
             Console.WriteLine("Rental failed. Check user limit, equipment availability, or IDs.");
+
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+    }
+
+    private static void ReturnEquipment()
+    {
+        var activeRentals = service.GetActiveRentals();
+        if (!activeRentals.Any())
+        {
+            Console.WriteLine("No active rentals.");
+            Console.ReadKey();
+            return;
+        }
+
+        Console.WriteLine("Active rentals:");
+        foreach (var rental in activeRentals)
+        {
+            Console.WriteLine(
+                $"{rental.Id} - {rental.Equipment.Name} rented by {rental.User.FirstName} {rental.User.LastName}, due {rental.DueDate:yyyy-MM-dd}");
+        }
+
+        Console.Write("Enter rental ID to return: ");
+        var rentalId = Console.ReadLine();
+
+        var success = service.ReturnEquipment(rentalId ?? string.Empty);
+        if (success)
+            Console.WriteLine("Return processed. Fine (if any) will be shown.");
+        else
+            Console.WriteLine("Return failed. Invalid ID or already returned.");
 
         Console.WriteLine("Press any key to continue...");
         Console.ReadKey();

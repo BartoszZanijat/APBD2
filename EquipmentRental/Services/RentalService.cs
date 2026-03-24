@@ -42,5 +42,34 @@ public class RentalService
         equipment.IsAvailable = false; // mark as rented
         return true;
     }
+
+    public bool ReturnEquipment(string rentalId)
+    {
+        var rental = _rentals.FirstOrDefault(r => r.Id == rentalId);
+        if (rental == null || rental.ReturnDate != null)
+            return false;
+
+        rental.ReturnDate = DateTime.Now;
+        if (rental.ReturnDate > rental.DueDate)
+        {
+            int daysLate = (rental.ReturnDate.Value - rental.DueDate).Days;
+            rental.Fine = daysLate * 10m; // 10 PLN per day
+        }
+        else
+        {
+            rental.Fine = 0;
+        }
+
+        // Make equipment available again
+        var equipment = rental.Equipment;
+        equipment.IsAvailable = true;
+        return true;
+    }
+
+    public List<Rental> GetActiveRentals() =>
+        _rentals.Where(r => r.ReturnDate == null).ToList();
+
+    public List<Rental> GetRentalsForUser(string userId) =>
+        _rentals.Where(r => r.User.Id == userId).ToList();
 }
 
