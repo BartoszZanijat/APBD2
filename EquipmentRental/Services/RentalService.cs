@@ -73,6 +73,9 @@ public class RentalService
     public List<Rental> GetRentalsForUser(string userId) =>
         _rentals.Where(r => r.User.Id == userId).ToList();
 
+    public List<Rental> GetActiveRentalsForUser(string userId) =>
+        _rentals.Where(r => r.User.Id == userId && r.ReturnDate == null).ToList();
+
     public bool MarkEquipmentAsDamaged(string equipmentId)
     {
         var eq = _equipment.FirstOrDefault(e => e.Id == equipmentId);

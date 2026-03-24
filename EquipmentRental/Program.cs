@@ -332,18 +332,18 @@ class Program
 
         Console.Write("Enter user ID: ");
         var userId = Console.ReadLine();
-        var rentals = service.GetRentalsForUser(userId ?? string.Empty);
+        var rentals = service.GetActiveRentalsForUser(userId ?? string.Empty);
 
         if (!rentals.Any())
         {
-            Console.WriteLine("No rentals for this user.");
+            Console.WriteLine("No active rentals for this user.");
         }
         else
         {
             foreach (var r in rentals)
             {
                 Console.WriteLine(
-                    $"{r.Equipment.Name} - Rented: {r.RentDate:yyyy-MM-dd}, Due: {r.DueDate:yyyy-MM-dd}, Returned: {r.ReturnDate?.ToString("yyyy-MM-dd") ?? "not returned"}");
+                    $"{r.Equipment.Name} - Rented: {r.RentDate:yyyy-MM-dd}, Due: {r.DueDate:yyyy-MM-dd}");
             }
         }
 
