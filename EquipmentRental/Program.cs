@@ -18,6 +18,7 @@ class Program
             Console.WriteLine("2. Add equipment");
             Console.WriteLine("3. List all equipment");
             Console.WriteLine("4. List available equipment");
+            Console.WriteLine("5. Rent equipment");
             Console.WriteLine("0. Exit");
             Console.Write("Choose option: ");
 
@@ -35,6 +36,9 @@ class Program
                     break;
                 case "4":
                     ListAvailableEquipment();
+                    break;
+                case "5":
+                    RentEquipment();
                     break;
                 case "0":
                     return;
@@ -172,6 +176,55 @@ class Program
                 Console.WriteLine($"{eq.Id} - {eq.Name}");
             }
         }
+
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+    }
+
+    private static void RentEquipment()
+    {
+        var users = service.GetAllUsers();
+        if (!users.Any())
+        {
+            Console.WriteLine("No users. Add a user first.");
+            Console.ReadKey();
+            return;
+        }
+
+        Console.WriteLine("Users:");
+        foreach (var u in users)
+            Console.WriteLine($"{u.Id} - {u.FirstName} {u.LastName} ({u.GetType().Name})");
+
+        Console.Write("Enter user ID: ");
+        var userId = Console.ReadLine();
+
+        var available = service.GetAvailableEquipment();
+        if (!available.Any())
+        {
+            Console.WriteLine("No available equipment.");
+            Console.ReadKey();
+            return;
+        }
+
+        Console.WriteLine("Available equipment:");
+        foreach (var eq in available)
+            Console.WriteLine($"{eq.Id} - {eq.Name}");
+
+        Console.Write("Enter equipment ID: ");
+        var eqId = Console.ReadLine();
+        Console.Write("Rental duration (days): ");
+        if (!int.TryParse(Console.ReadLine(), out int days) || days <= 0)
+        {
+            Console.WriteLine("Invalid days.");
+            Console.ReadKey();
+            return;
+        }
+
+        var success = service.RentEquipment(userId ?? string.Empty, eqId ?? string.Empty, days);
+        if (success)
+            Console.WriteLine("Rental successful.");
+        else
+            Console.WriteLine("Rental failed. Check user limit, equipment availability, or IDs.");
 
         Console.WriteLine("Press any key to continue...");
         Console.ReadKey();
