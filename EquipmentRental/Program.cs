@@ -51,6 +51,9 @@ class Program
                 case "11":
                     ShowReport();
                     break;
+                case "12":
+                    ExportData();
+                    break;
                 case "0":
                     return;
                 default:
@@ -75,6 +78,7 @@ class Program
         Console.WriteLine("9. Show overdue rentals");
         Console.WriteLine("10. Show active rentals");
         Console.WriteLine("11. Show report");
+        Console.WriteLine("12. Export to JSON");
         Console.WriteLine("0. Exit");
         Console.Write("Choose option: ");
     }
@@ -386,6 +390,18 @@ class Program
     private static void ShowReport()
     {
         Console.WriteLine(service.GenerateReport());
+        Pause();
+    }
+
+    private static void ExportData()
+    {
+        Console.Write("Enter file name (e.g., data.json): ");
+        var fileName = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(fileName))
+            fileName = "export.json";
+
+        service.ExportToJson(fileName);
+        Console.WriteLine($"Data exported to {fileName}");
         Pause();
     }
 }

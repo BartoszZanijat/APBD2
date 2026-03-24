@@ -1,3 +1,4 @@
+using System.Text.Json;
 using EquipmentRental.Models;
 
 namespace EquipmentRental.Services;
@@ -104,6 +105,20 @@ public class RentalService
                 Overdue rentals: {overdueCount}
                 Total fines collected: {totalFinesCollected:C}
                 """;
+    }
+
+    public void ExportToJson(string filePath)
+    {
+        var data = new
+        {
+            Users = _users,
+            Equipment = _equipment,
+            Rentals = _rentals
+        };
+
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        string json = JsonSerializer.Serialize(data, options);
+        File.WriteAllText(filePath, json);
     }
 }
 
