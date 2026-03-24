@@ -20,6 +20,10 @@ class Program
             Console.WriteLine("4. List available equipment");
             Console.WriteLine("5. Rent equipment");
             Console.WriteLine("6. Return equipment");
+            Console.WriteLine("7. Mark equipment as damaged");
+            Console.WriteLine("8. Show rentals for user");
+            Console.WriteLine("9. Show overdue rentals");
+            Console.WriteLine("10. Show report");
             Console.WriteLine("0. Exit");
             Console.Write("Choose option: ");
 
@@ -43,6 +47,18 @@ class Program
                     break;
                 case "6":
                     ReturnEquipment();
+                    break;
+                case "7":
+                    MarkEquipmentDamaged();
+                    break;
+                case "8":
+                    ShowUserRentals();
+                    break;
+                case "9":
+                    ShowOverdueRentals();
+                    break;
+                case "10":
+                    ShowReport();
                     break;
                 case "0":
                     return;
@@ -260,6 +276,93 @@ class Program
         else
             Console.WriteLine("Return failed. Invalid ID or already returned.");
 
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+    }
+
+    private static void MarkEquipmentDamaged()
+    {
+        var all = service.GetAllEquipment();
+        if (!all.Any())
+        {
+            Console.WriteLine("No equipment.");
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+            return;
+        }
+
+        foreach (var eq in all)
+            Console.WriteLine($"{eq.Id} - {eq.Name} (Damaged: {eq.IsDamaged})");
+
+        Console.Write("Enter equipment ID: ");
+        var id = Console.ReadLine();
+
+        if (service.MarkEquipmentAsDamaged(id ?? string.Empty))
+            Console.WriteLine("Equipment marked as damaged.");
+        else
+            Console.WriteLine("Failed.");
+
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+    }
+
+    private static void ShowUserRentals()
+    {
+        var users = service.GetAllUsers();
+        if (!users.Any())
+        {
+            Console.WriteLine("No users.");
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
+            return;
+        }
+
+        foreach (var u in users)
+            Console.WriteLine($"{u.Id} - {u.FirstName} {u.LastName}");
+
+        Console.Write("Enter user ID: ");
+        var userId = Console.ReadLine();
+        var rentals = service.GetRentalsForUser(userId ?? string.Empty);
+
+        if (!rentals.Any())
+        {
+            Console.WriteLine("No rentals for this user.");
+        }
+        else
+        {
+            foreach (var r in rentals)
+            {
+                Console.WriteLine(
+                    $"{r.Equipment.Name} - Rented: {r.RentDate:yyyy-MM-dd}, Due: {r.DueDate:yyyy-MM-dd}, Returned: {r.ReturnDate?.ToString("yyyy-MM-dd") ?? "not returned"}");
+            }
+        }
+
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+    }
+
+    private static void ShowOverdueRentals()
+    {
+        var overdue = service.GetOverdueRentals();
+        if (!overdue.Any())
+        {
+            Console.WriteLine("No overdue rentals.");
+        }
+        else
+        {
+            foreach (var r in overdue)
+            {
+                Console.WriteLine($"{r.Id} - {r.Equipment.Name} to {r.User.FirstName} {r.User.LastName}, due {r.DueDate:yyyy-MM-dd}");
+            }
+        }
+
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+    }
+
+    private static void ShowReport()
+    {
+        Console.WriteLine(service.GenerateReport());
         Console.WriteLine("Press any key to continue...");
         Console.ReadKey();
     }

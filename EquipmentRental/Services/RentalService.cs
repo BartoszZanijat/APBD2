@@ -71,5 +71,39 @@ public class RentalService
 
     public List<Rental> GetRentalsForUser(string userId) =>
         _rentals.Where(r => r.User.Id == userId).ToList();
+
+    public bool MarkEquipmentAsDamaged(string equipmentId)
+    {
+        var eq = _equipment.FirstOrDefault(e => e.Id == equipmentId);
+        if (eq == null) return false;
+        eq.IsDamaged = true;
+        eq.IsAvailable = false; // damaged equipment cannot be rented
+        return true;
+    }
+
+    public List<Rental> GetOverdueRentals()
+    {
+        return _rentals.Where(r => r.ReturnDate == null && r.DueDate < DateTime.Now).ToList();
+    }
+
+    public string GenerateReport()
+    {
+        var totalEquipment = _equipment.Count;
+        var availableCount = _equipment.Count(e => e.IsAvailable && !e.IsDamaged);
+        var damagedCount = _equipment.Count(e => e.IsDamaged);
+        var activeRentals = _rentals.Count(r => r.ReturnDate == null);
+        var overdueCount = GetOverdueRentals().Count;
+        var totalFinesCollected = _rentals.Where(r => r.Fine.HasValue).Sum(r => r.Fine!.Value);
+
+        return $"""
+                === Rental System Report ===
+                Total equipment: {totalEquipment}
+                Available: {availableCount}
+                Damaged: {damagedCount}
+                Active rentals: {activeRentals}
+                Overdue rentals: {overdueCount}
+                Total fines collected: {totalFinesCollected:C}
+                """;
+    }
 }
 
