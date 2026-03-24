@@ -13,19 +13,7 @@ class Program
         while (true)
         {
             Console.Clear();
-            Console.WriteLine("=== Equipment Rental System ===");
-            Console.WriteLine("1. Add user");
-            Console.WriteLine("2. Add equipment");
-            Console.WriteLine("3. List all equipment");
-            Console.WriteLine("4. List available equipment");
-            Console.WriteLine("5. Rent equipment");
-            Console.WriteLine("6. Return equipment");
-            Console.WriteLine("7. Mark equipment as damaged");
-            Console.WriteLine("8. Show rentals for user");
-            Console.WriteLine("9. Show overdue rentals");
-            Console.WriteLine("10. Show report");
-            Console.WriteLine("0. Exit");
-            Console.Write("Choose option: ");
+            DisplayMenu();
 
             var input = Console.ReadLine();
             switch (input)
@@ -58,16 +46,43 @@ class Program
                     ShowOverdueRentals();
                     break;
                 case "10":
+                    ShowActiveRentals();
+                    break;
+                case "11":
                     ShowReport();
                     break;
                 case "0":
                     return;
                 default:
-                    Console.WriteLine("Invalid option. Press any key to continue...");
-                    Console.ReadKey();
+                    Console.WriteLine("Invalid option.");
+                    Pause();
                     break;
             }
         }
+    }
+
+    private static void DisplayMenu()
+    {
+        Console.WriteLine("=== Equipment Rental System ===");
+        Console.WriteLine("1. Add user");
+        Console.WriteLine("2. Add equipment");
+        Console.WriteLine("3. List all equipment");
+        Console.WriteLine("4. List available equipment");
+        Console.WriteLine("5. Rent equipment");
+        Console.WriteLine("6. Return equipment");
+        Console.WriteLine("7. Mark equipment as damaged");
+        Console.WriteLine("8. Show rentals for user");
+        Console.WriteLine("9. Show overdue rentals");
+        Console.WriteLine("10. Show active rentals");
+        Console.WriteLine("11. Show report");
+        Console.WriteLine("0. Exit");
+        Console.Write("Choose option: ");
+    }
+
+    private static void Pause()
+    {
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
     }
 
     private static void AddUser()
@@ -82,7 +97,7 @@ class Program
         if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
         {
             Console.WriteLine("First and last name cannot be empty.");
-            Console.ReadKey();
+            Pause();
             return;
         }
 
@@ -96,14 +111,13 @@ class Program
         if (user == null)
         {
             Console.WriteLine("Invalid type. Use: student / employee.");
-            Console.ReadKey();
+            Pause();
             return;
         }
 
         service.AddUser(user);
         Console.WriteLine($"User {user.FirstName} {user.LastName} added with ID {user.Id}");
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        Pause();
     }
 
     private static void AddEquipment()
@@ -116,7 +130,7 @@ class Program
         if (string.IsNullOrWhiteSpace(name))
         {
             Console.WriteLine("Equipment name cannot be empty.");
-            Console.ReadKey();
+            Pause();
             return;
         }
 
@@ -153,14 +167,13 @@ class Program
         if (eq == null)
         {
             Console.WriteLine("Invalid type or invalid numeric input.");
-            Console.ReadKey();
+            Pause();
             return;
         }
 
         service.AddEquipment(eq);
         Console.WriteLine($"Equipment {eq.Name} added with ID {eq.Id}");
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        Pause();
     }
 
     private static void ListAllEquipment()
@@ -178,8 +191,7 @@ class Program
             }
         }
 
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        Pause();
     }
 
     private static void ListAvailableEquipment()
@@ -197,8 +209,7 @@ class Program
             }
         }
 
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        Pause();
     }
 
     private static void RentEquipment()
@@ -207,7 +218,7 @@ class Program
         if (!users.Any())
         {
             Console.WriteLine("No users. Add a user first.");
-            Console.ReadKey();
+            Pause();
             return;
         }
 
@@ -222,7 +233,7 @@ class Program
         if (!available.Any())
         {
             Console.WriteLine("No available equipment.");
-            Console.ReadKey();
+            Pause();
             return;
         }
 
@@ -236,7 +247,7 @@ class Program
         if (!int.TryParse(Console.ReadLine(), out int days) || days <= 0)
         {
             Console.WriteLine("Invalid days.");
-            Console.ReadKey();
+            Pause();
             return;
         }
 
@@ -246,8 +257,7 @@ class Program
         else
             Console.WriteLine("Rental failed. Check user limit, equipment availability, or IDs.");
 
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        Pause();
     }
 
     private static void ReturnEquipment()
@@ -256,7 +266,7 @@ class Program
         if (!activeRentals.Any())
         {
             Console.WriteLine("No active rentals.");
-            Console.ReadKey();
+            Pause();
             return;
         }
 
@@ -276,8 +286,7 @@ class Program
         else
             Console.WriteLine("Return failed. Invalid ID or already returned.");
 
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        Pause();
     }
 
     private static void MarkEquipmentDamaged()
@@ -286,8 +295,7 @@ class Program
         if (!all.Any())
         {
             Console.WriteLine("No equipment.");
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
+            Pause();
             return;
         }
 
@@ -302,8 +310,7 @@ class Program
         else
             Console.WriteLine("Failed.");
 
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        Pause();
     }
 
     private static void ShowUserRentals()
@@ -312,8 +319,7 @@ class Program
         if (!users.Any())
         {
             Console.WriteLine("No users.");
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
+            Pause();
             return;
         }
 
@@ -337,8 +343,7 @@ class Program
             }
         }
 
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        Pause();
     }
 
     private static void ShowOverdueRentals()
@@ -356,14 +361,31 @@ class Program
             }
         }
 
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        Pause();
+    }
+
+    private static void ShowActiveRentals()
+    {
+        var activeRentals = service.GetActiveRentals();
+        if (!activeRentals.Any())
+        {
+            Console.WriteLine("No active rentals.");
+        }
+        else
+        {
+            foreach (var r in activeRentals)
+            {
+                Console.WriteLine(
+                    $"{r.Id} - {r.Equipment.Name} rented by {r.User.FirstName} {r.User.LastName}, due {r.DueDate:yyyy-MM-dd}");
+            }
+        }
+
+        Pause();
     }
 
     private static void ShowReport()
     {
         Console.WriteLine(service.GenerateReport());
-        Console.WriteLine("Press any key to continue...");
-        Console.ReadKey();
+        Pause();
     }
 }
